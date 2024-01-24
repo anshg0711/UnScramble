@@ -47,15 +47,13 @@ class GameViewModel: ViewModel(){
         return String(tempWord)
     }
     fun checkUserGuess(){
-        if (userGuess.equals(currentWord, ignoreCase = true)) {
-
+        if (userGuess.equals(currentWord, ignoreCase = true)){
             userGuess="";
             var check: Int=_uiState.value.currentWordCount
             if(_uiState.value.currentWordCount!=3)check++
             _uiState.update { currentState ->
                 currentState.copy(pickRandomWordAndShuffle(), isGuessedWordWrong = false, score= currentState.score+20 , currentWordCount = check )
             }
-
         } else {
             Log.d("checking", currentWord)
             userGuess=""
@@ -63,6 +61,10 @@ class GameViewModel: ViewModel(){
                 currentState.copy(isGuessedWordWrong = true)
             }
         }
+    }
+    fun skip(){
+        _uiState.value = GameUiState(pickRandomWordAndShuffle(), isGuessedWordWrong = false)
+        userGuess=""
     }
     fun resetGame() {
         usedWords.clear()
