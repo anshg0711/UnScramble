@@ -20,6 +20,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -28,6 +29,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -45,6 +47,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -63,7 +66,7 @@ fun GameScreen(gameViewModel: GameViewModel = viewModel()) {
     val gameUiState by gameViewModel.uiState.collectAsState()
     val mediumPadding = dimensionResource(R.dimen.padding_medium)
     Column(
-        modifier = Modifier
+        modifier = Modifier.padding(vertical = 40.dp)
             .verticalScroll(rememberScrollState())
             .padding(mediumPadding),
         verticalArrangement = Arrangement.Center,
@@ -74,7 +77,36 @@ fun GameScreen(gameViewModel: GameViewModel = viewModel()) {
             text = stringResource(R.string.app_name),
             style = typography.titleLarge,
         )
+        Row(modifier = Modifier
+            .fillMaxWidth()
+        ) {
+            Button(modifier = Modifier.weight(1F),
 
+                onClick = {
+                    gameViewModel.hint(0)
+                }, colors = ButtonDefaults.buttonColors(Color.Yellow)
+            ) {
+
+                Log.d("qwhfqewhcewhqbchqbwecbhwe", gameUiState.currentScrambledWord)
+                Text(
+                    text = "Hint",
+                    fontSize = 16.sp, color = Color.Black
+                )
+            }
+            Button(modifier = Modifier.weight(1F),
+
+                onClick = {
+                    gameViewModel.hint(1)
+                }, colors = ButtonDefaults.buttonColors(Color.Yellow)
+            ) {
+
+                Log.d("qwhfqewhcewhqbchqbwecbhwe", gameUiState.currentScrambledWord)
+                Text(
+                    text = "Word",
+                    fontSize = 16.sp, color = Color.Black
+                )
+            }
+        }
         GameLayout( currentScrambledWord = gameUiState.currentScrambledWord,
             isGuessWrong= gameUiState.isGuessedWordWrong,
             userGuess = gameViewModel.userGuess,

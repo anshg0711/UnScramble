@@ -47,6 +47,7 @@ class GameViewModel: ViewModel(){
         return String(tempWord)
     }
     fun checkUserGuess(){
+        if(userGuess=="")return
         if (userGuess.equals(currentWord, ignoreCase = true)){
             userGuess="";
             var check: Int=_uiState.value.currentWordCount
@@ -69,6 +70,17 @@ class GameViewModel: ViewModel(){
     fun resetGame() {
         usedWords.clear()
         _uiState.value = GameUiState(pickRandomWordAndShuffle(), isGuessedWordWrong = false, score = 0, currentWordCount = 1)
+    }
+
+    fun hint(flag : Int) {
+        if(flag==1) {
+            userGuess = currentWord
+            return
+        }
+        var hint:String =currentWord
+
+        hint=hint.substring(currentWord.length/2)
+        userGuess=hint
     }
 
     init {
