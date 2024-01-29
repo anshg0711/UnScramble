@@ -51,6 +51,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,23 +61,29 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.unscramble.R
 import com.example.unscramble.ui.theme.UnscrambleTheme
 
+//@Composable
 @Composable
 fun GameScreen(gameViewModel: GameViewModel = viewModel()) {
 
     val gameUiState by gameViewModel.uiState.collectAsState()
     val mediumPadding = dimensionResource(R.dimen.padding_medium)
     Column(
-        modifier = Modifier.padding(vertical = 40.dp)
+        modifier = Modifier
+            .padding(vertical = 40.dp)
             .verticalScroll(rememberScrollState())
             .padding(mediumPadding),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
 
         Text(
-            text = stringResource(R.string.app_name),
+
+            fontSize =40.sp,
+            text = gameUiState.timer.toString(),
             style = typography.titleLarge,
         )
+
         Row(modifier = Modifier
             .fillMaxWidth()
         ) {

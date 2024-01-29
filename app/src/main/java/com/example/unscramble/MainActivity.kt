@@ -30,8 +30,10 @@ import com.example.unscramble.ui.theme.UnscrambleTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         println("Create function is called ")
+        Log.d("ThreadName Activity", Thread.currentThread().name)
 //        GameViewModel()
         setContent {
             UnscrambleTheme {

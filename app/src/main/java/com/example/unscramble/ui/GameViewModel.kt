@@ -4,14 +4,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.unscramble.data.allWords
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 
 class GameViewModel: ViewModel(){
+
     private lateinit var currentWord: String
     var userGuess by mutableStateOf("")
         private set
@@ -84,7 +91,29 @@ class GameViewModel: ViewModel(){
     }
 
     init {
+        Log.d("ThreadName GameViewModel", Thread.currentThread().name)
         resetGame()
+        CoroutineScope(Dispatchers.IO).launch{  timer()}
     }
-
+    override fun onCleared() {
+        super.onCleared()
+        // Cancel coroutines when ViewModel is cleared
+        viewModelScope.cancel()
+    }
+    private suspend fun timer(){
+        while(true) {
+            if (_uiState.value.timer == 0) {
+                skip();
+                _uiState.update { currentState ->
+                    currentState.copy(timer = 15)
+                }
+            } else {
+                _uiState.update { currentState ->
+                    currentState.copy(timer = currentState.timer - 1)
+                }
+            }
+            Log.d("ThreadName timer", Thread.currentThread().name)
+            delay(1000)
+        }
+    }
 }
